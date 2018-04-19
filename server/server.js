@@ -7,7 +7,7 @@ const publicPath = path.join(__dirname,'../public');
 const port = process.env.PORT || 3000;
 var app = express();
 var server = http.createServer(app);
-var io = socketIO(server);      // integrating socketio with server
+var io = socketIO(server);     // integrating socketio with server
 
 // serve static files
 app.use(express.static(publicPath));
@@ -15,6 +15,16 @@ app.use(express.static(publicPath));
 // Socket IO code
 io.on('connection',(socket)=>{
     console.log('New user connected');
+
+    socket.emit('newMessage',{
+        from: 'shivam86@gmail.com',
+        text: 'Hey how are you?',
+        createdAt: '19/04/201'
+    });
+
+    socket.on('createMessage',(message)=>{
+        console.log('Recieved a message: ',message);
+    });
 
     socket.on('disconnect',()=>{
       console.log('Client disconnected');
